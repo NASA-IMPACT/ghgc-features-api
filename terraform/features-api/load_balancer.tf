@@ -87,7 +87,7 @@ resource "aws_security_group" "https_web_inbound_sg" {
 }
 
 resource "aws_alb" "alb_ecs" {
-  name            = "${var.project_name}-${var.env}-alb"
+  name            = "${var.project_name}-alb"
   subnets         = data.aws_subnets.public.ids
   security_groups = [aws_security_group.web_inbound_sg.id]
 
