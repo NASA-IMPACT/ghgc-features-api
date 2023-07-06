@@ -48,7 +48,7 @@ runs:
       working-directory: ${{ inputs.dir }}
       run: |
         bash ./scripts/deploy.sh .env <<< init
-        bash ./scripts/deploy.sh .env <<< plan
+        bash ./scripts/deploy.sh .env <<< deploy
 
 #    - name: Docker build, tag, and push image to Amazon ECR
 #      shell: bash

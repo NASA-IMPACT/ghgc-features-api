@@ -5,7 +5,9 @@ cdk.out
 .env*
 .ipynb_checkpoints
 data/
-
+terraform.tfvars
+.terraform
+terraform.tf
 */__pycache__
 
 .pgdata
