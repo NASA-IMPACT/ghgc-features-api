@@ -135,3 +135,9 @@ variable "lb_type" {
 variable "lb_target_group_arn" {}
 variable "lb_security_group_id" {}
 variable "lb_container_port" {}
+variable "account_id" {
+
+}
+variable "permissions_boundary_policy_name" {
+
+}

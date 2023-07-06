@@ -18,7 +18,7 @@ data "aws_security_groups" "security_groups" {
 
 /* security group for ALB */
 resource "aws_security_group" "web_inbound_sg" {
-  name        = "tf-${var.project_name}-${var.env}-web-inbound-sg"
+  name        = "${var.project_name}-${var.env}-web-inbound-sg"
   description = "Allow HTTP from Anywhere into ALB"
   vpc_id      = var.vpc_id
 
@@ -87,7 +87,7 @@ resource "aws_security_group" "https_web_inbound_sg" {
 }
 
 resource "aws_alb" "alb_ecs" {
-  name            = "tf-${var.project_name}-${var.env}-alb"
+  name            = "${var.project_name}-${var.env}-alb"
   subnets         = data.aws_subnets.public.ids
   security_groups = [aws_security_group.web_inbound_sg.id]
 

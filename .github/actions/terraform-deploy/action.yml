@@ -36,7 +36,7 @@ runs:
       run: |
         python ${{ inputs.script_path }} --secret-id ${{ inputs.env_aws_secret_name }}
         echo "STAGE=${{ inputs.stage }}" >> ${{ inputs.env-file }}
-        echo "PREFIX=${{ inputs.project_prefix }}-${{ inputs.stage }}-features-api" >> ${{ inputs.env-file }}
+        echo "PREFIX=${{ inputs.project_prefix }}-${{ inputs.stage }}-fapi" >> ${{ inputs.env-file }}
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
@@ -48,7 +48,6 @@ runs:
       working-directory: ${{ inputs.dir }}
       run: |
         bash ./scripts/deploy.sh .env <<< init
-        cat ./terraform/features-api/terraform.tfvars
         bash ./scripts/deploy.sh .env <<< plan
 
 #    - name: Docker build, tag, and push image to Amazon ECR

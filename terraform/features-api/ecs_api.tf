@@ -9,6 +9,15 @@ data "aws_subnets" "private" {
   }
 }
 
+data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
+
+locals {
+  aws_region = data.aws_region.current.name
+  account_id = data.aws_caller_identity.current.account_id
+}
+
+
 module "ecs_cluster" {
   source      = "../modules/aws_ecs_service"
   environment = var.env
@@ -98,6 +107,8 @@ module "ecs_cluster" {
   lb_container_port    = var.service_port
 
   tags = var.tags
+  account_id = local.account_id
+  permissions_boundary_policy_name = var.permissions_boundary_policy_name
 }
 
 ##############################################################
