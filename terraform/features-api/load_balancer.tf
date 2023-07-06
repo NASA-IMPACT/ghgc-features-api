@@ -51,12 +51,12 @@ resource "aws_security_group" "web_inbound_sg" {
   }
 
   tags = {
-    Name = "tf-${var.project_name}-${var.env}-web-inbound-sg"
+    Name = "tf-${var.project_name}-web-inbound-sg"
   }
 }
 
 resource "aws_security_group" "https_web_inbound_sg" {
-  name        = "tf-${var.project_name}-${var.env}-https-web-inbound-sg"
+  name        = "tf-${var.project_name}-web-in-sg"
   description = "Allow HTTPS from Anywhere into ALB"
   vpc_id      = var.vpc_id
 
@@ -82,7 +82,7 @@ resource "aws_security_group" "https_web_inbound_sg" {
   }
 
   tags = {
-    Name = "tf-${var.project_name}-${var.env}-https-web-inbound-sg"
+    Name = "tf-${var.project_name}-web-in-sg"
   }
 }
 
@@ -97,7 +97,7 @@ resource "aws_alb" "alb_ecs" {
 }
 
 resource "aws_alb_target_group" "alb_target_group" {
-  name                 = "tf-${var.project_name}-${var.env}-tgp"
+  name                 = "tf-${var.project_name}-tgp"
   port                 = var.service_port
   protocol             = "HTTP"
   vpc_id               = var.vpc_id
