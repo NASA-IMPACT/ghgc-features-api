@@ -48,7 +48,7 @@ runs:
       working-directory: ${{ inputs.dir }}
       run: |
         bash ./scripts/deploy.sh .env <<< init
-        cat terraform.tfvars
+        cat ./terraform/features-api/terraform.tfvars
         bash ./scripts/deploy.sh .env <<< plan
 
 #    - name: Docker build, tag, and push image to Amazon ECR
