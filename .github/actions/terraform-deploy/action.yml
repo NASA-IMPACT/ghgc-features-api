@@ -17,7 +17,9 @@ inputs:
   stage:
     required: true
     type: string
-
+  script_path:
+    required: true
+    type: string
 
 runs:
   using: "composite"
