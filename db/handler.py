@@ -2,13 +2,13 @@
 
 import asyncio
 import json
+import os
 
 import boto3
 import psycopg
 # import requests
 from psycopg import sql
 from psycopg.conninfo import make_conninfo
-import os
 
 # def send(
 #     event,
@@ -138,7 +138,7 @@ def handler(event, context):
         # return send(event, context, "SUCCESS", {"msg": "No action to be taken"})
 
     try:
-        connection_params = get_secret(os.environ['CONN_SECRET_ARN'])
+        connection_params = get_secret(os.environ["CONN_SECRET_ARN"])
         user_params = event["user_params"]
         print("Connecting to DB...")
         con_str = make_conninfo(
@@ -190,11 +190,7 @@ def handler(event, context):
 
     except Exception as e:
         print(e)
-        return {
-        'message' : e
-        }
-    
+        return {"message": e}
+
     print("Event Complete")
-    return {
-        'message' : connection_params
-    }
+    return {"message": connection_params}

@@ -1,23 +1,24 @@
+import json
 import logging
 import os
 import sys
-import json
-
-from fastapi import FastAPI, Request, Response, APIRouter, status
-from fastapi.routing import APIRoute
-from fastapi.responses import JSONResponse
-from opentelemetry import trace, metrics
-from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
-from starlette_cramjam.middleware import CompressionMiddleware
-from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.middleware.cors import CORSMiddleware
-from tipg.db import close_db_connection, connect_to_db, register_collection_catalog
-from tipg.factory import Endpoints as FeaturesEndpoints
-from tipg.settings import PostgresSettings
 from typing import Callable
 
+from fastapi import APIRouter, FastAPI, Request, Response, status
+from fastapi.responses import JSONResponse
+from fastapi.routing import APIRoute
+from opentelemetry import metrics, trace
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.middleware.cors import CORSMiddleware
+from starlette_cramjam.middleware import CompressionMiddleware
+from tipg.db import (close_db_connection, connect_to_db,
+                     register_collection_catalog)
+from tipg.factory import Endpoints as FeaturesEndpoints
+from tipg.settings import PostgresSettings
+
 logger = logging.getLogger(__name__)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 handler = logging.StreamHandler(sys.stdout)
 handler.setFormatter(formatter)
 logger.setLevel(logging.INFO)
@@ -33,18 +34,19 @@ except TypeError:
         "password": os.environ.get("POSTGRES_PASS"),
         "host": os.environ.get("POSTGRES_HOST"),
         "port": os.environ.get("POSTGRES_PORT"),
-        "dbname": os.environ.get("POSTGRES_DBNAME")
+        "dbname": os.environ.get("POSTGRES_DBNAME"),
     }
 
 tracer = trace.get_tracer(__name__)
 meter = metrics.get_meter(__name__)
 refresh_counter = meter.create_counter(
-    "refresh.counter", unit="1", description="counts the number of releases so we can graph b/c CW metrics are trash"
+    "refresh.counter",
+    unit="1",
+    description="counts the number of releases so we can graph b/c CW metrics are trash",
 )
 
 
 class LoggerRouteHandler(APIRoute):
-
     def get_route_handler(self) -> Callable:
         original_route_handler = super().get_route_handler()
 
@@ -84,13 +86,15 @@ app = FastAPI(
     docs_url="/api.html",
 )
 
-postgresql_settings = PostgresSettings(**{
-    "postgres_user": db_config["username"],
-    "postgres_pass": db_config["password"],
-    "postgres_host": db_config["host"],
-    "postgres_port": db_config["port"],
-    "postgres_dbname": db_config["dbname"]
-})
+postgresql_settings = PostgresSettings(
+    **{
+        "postgres_user": db_config["username"],
+        "postgres_pass": db_config["password"],
+        "postgres_host": db_config["host"],
+        "postgres_port": db_config["port"],
+        "postgres_dbname": db_config["dbname"],
+    }
+)
 
 endpoints = FeaturesEndpoints(router=APIRouter(route_class=LoggerRouteHandler))
 app.include_router(endpoints.router, tags=["OGC Features"])
