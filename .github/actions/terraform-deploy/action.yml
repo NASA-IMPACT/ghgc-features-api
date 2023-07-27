@@ -50,8 +50,9 @@ runs:
       shell: bash
       working-directory: ${{ inputs.dir }}
       run: |
-        bash ./scripts/deploy.sh .env <<< init
-        bash ./scripts/deploy.sh .env <<< deploy
+        cat ${{ inputs.env-file }}
+        bash ./scripts/deploy.sh ${{ inputs.env-file }} <<< init
+        bash ./scripts/deploy.sh ${{ inputs.env-file }} <<< deploy
 
 #    - name: Docker build, tag, and push image to Amazon ECR
 #      shell: bash
