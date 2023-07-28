@@ -12,14 +12,14 @@ variable "project_name" {
 
 variable "tags" {
   type        = map(any)
-  default     = {"project": "ghgc", "service": "ghgc-features-api-dev"}
+  default     = { "project" : "ghgc", "service" : "ghgc-features-api-dev" }
   description = "Optional tags to add to resources"
 }
 
 variable "availability_zones" {
   type        = list(any)
   description = "The az that the resources will be launched"
-  default = ["us-west-2a", "us-west-2b"]
+  default     = ["us-west-2a", "us-west-2b"]
 }
 
 variable "service_port" {

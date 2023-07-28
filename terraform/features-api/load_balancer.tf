@@ -125,14 +125,14 @@ resource "aws_alb_target_group" "alb_target_group" {
 }
 
 resource "aws_alb_listener" "alb_listener_ecs" {
- load_balancer_arn = aws_alb.alb_ecs.arn
- port              = 80
- depends_on        = [aws_alb_target_group.alb_target_group]
- protocol = "HTTP"
- default_action {
-   target_group_arn = aws_alb_target_group.alb_target_group.arn
-   type             = "forward"
- }
+  load_balancer_arn = aws_alb.alb_ecs.arn
+  port              = 80
+  depends_on        = [aws_alb_target_group.alb_target_group]
+  protocol          = "HTTP"
+  default_action {
+    target_group_arn = aws_alb_target_group.alb_target_group.arn
+    type             = "forward"
+  }
 }
 
 # resource "aws_alb_listener" "alb_listener_ecs" {

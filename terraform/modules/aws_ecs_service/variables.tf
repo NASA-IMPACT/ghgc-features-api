@@ -6,13 +6,13 @@ variable "subnet_ids" {
 }
 
 variable "tags" {
-  type    = map
+  type    = map(any)
   default = {}
 }
 
 variable "service_name" {}
 variable "service_port" {
-  type    = number
+  type = number
 }
 
 variable "service_protocol" {
@@ -37,7 +37,7 @@ variable "log_retention_days" {
 }
 
 variable "container_command" {
-  type        = list
+  type        = list(any)
   default     = []
   description = "Command to execute in the container in list format (ex: ['executable','param1','param2']). Pass an empty string to use the container default."
 }
@@ -93,13 +93,13 @@ variable "additional_sg_ingress_rules_for_vpc_default_sg" {
   #  ]
   #
   type = list(object({
-    primary_key        = string
-    vpc_default_sg_id  = string
-    protocol           = string
-    from_port          = number
-    to_port            = number
+    primary_key       = string
+    vpc_default_sg_id = string
+    protocol          = string
+    from_port         = number
+    to_port           = number
   }))
-  default = []
+  default     = []
   description = "If passed, this adds ingress rules to the VPC's default security group with ECS's security group as a source"
 }
 
@@ -139,7 +139,6 @@ variable "account_id" {
 
 }
 variable "permissions_boundary_policy_name" {
-  type = string
+  type    = string
   default = "null"
-
 }
