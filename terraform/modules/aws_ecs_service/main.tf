@@ -26,7 +26,7 @@ resource "aws_iam_role" "ecs_execution_role" {
   name               = "${var.service_name}-${var.environment}_role"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role_policy.json
   tags               = var.tags
-  permissions_boundary =  "arn:aws:iam::${var.account_id}:policy/${var.permissions_boundary_policy_name}"
+  permissions_boundary =  var.permissions_boundary_policy_name == "null" ? "arn:aws:iam::${var.account_id}:policy/${var.permissions_boundary_policy_name}" : null
 }
 
 data "aws_iam_policy_document" "ecs_execution_attachment" {

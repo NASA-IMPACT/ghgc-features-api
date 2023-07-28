@@ -54,4 +54,5 @@ variable "alb_protocol" {
 
 variable "vpc_id" {}
 variable "permissions_boundary_policy_name" {
+  type = string
 }

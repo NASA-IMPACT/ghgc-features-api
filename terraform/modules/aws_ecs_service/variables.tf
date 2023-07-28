@@ -139,5 +139,7 @@ variable "account_id" {
 
 }
 variable "permissions_boundary_policy_name" {
+  type = string
+  default = "null"
 
 }
