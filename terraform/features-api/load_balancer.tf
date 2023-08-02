@@ -5,7 +5,7 @@ data "aws_subnets" "public" {
   }
 
   tags = {
-    "aws-cdk:subnet-name" = "public"
+    "Scope" = "public"
   }
 }
 
@@ -18,7 +18,7 @@ data "aws_security_groups" "security_groups" {
 
 /* security group for ALB */
 resource "aws_security_group" "web_inbound_sg" {
-  name        = "tf-${var.project_name}-${var.env}-web-inbound-sg"
+  name        = "${var.project_name}-${var.env}-web-inbound-sg"
   description = "Allow HTTP from Anywhere into ALB"
   vpc_id      = var.vpc_id
 
@@ -51,12 +51,12 @@ resource "aws_security_group" "web_inbound_sg" {
   }
 
   tags = {
-    Name = "tf-${var.project_name}-${var.env}-web-inbound-sg"
+    Name = "tf-${var.project_name}-web-inbound-sg"
   }
 }
 
 resource "aws_security_group" "https_web_inbound_sg" {
-  name        = "tf-${var.project_name}-${var.env}-https-web-inbound-sg"
+  name        = "tf-${var.project_name}-web-in-sg"
   description = "Allow HTTPS from Anywhere into ALB"
   vpc_id      = var.vpc_id
 
@@ -82,12 +82,12 @@ resource "aws_security_group" "https_web_inbound_sg" {
   }
 
   tags = {
-    Name = "tf-${var.project_name}-${var.env}-https-web-inbound-sg"
+    Name = "tf-${var.project_name}-web-in-sg"
   }
 }
 
 resource "aws_alb" "alb_ecs" {
-  name            = "tf-${var.project_name}-${var.env}-alb"
+  name            = "${var.project_name}-alb"
   subnets         = data.aws_subnets.public.ids
   security_groups = [aws_security_group.web_inbound_sg.id]
 
@@ -97,7 +97,7 @@ resource "aws_alb" "alb_ecs" {
 }
 
 resource "aws_alb_target_group" "alb_target_group" {
-  name                 = "tf-${var.project_name}-${var.env}-tgp"
+  name                 = "tf-${var.project_name}-tgp"
   port                 = var.service_port
   protocol             = "HTTP"
   vpc_id               = var.vpc_id
@@ -125,14 +125,14 @@ resource "aws_alb_target_group" "alb_target_group" {
 }
 
 resource "aws_alb_listener" "alb_listener_ecs" {
- load_balancer_arn = aws_alb.alb_ecs.arn
- port              = 80
- depends_on        = [aws_alb_target_group.alb_target_group]
- protocol = "HTTP"
- default_action {
-   target_group_arn = aws_alb_target_group.alb_target_group.arn
-   type             = "forward"
- }
+  load_balancer_arn = aws_alb.alb_ecs.arn
+  port              = 80
+  depends_on        = [aws_alb_target_group.alb_target_group]
+  protocol          = "HTTP"
+  default_action {
+    target_group_arn = aws_alb_target_group.alb_target_group.arn
+    type             = "forward"
+  }
 }
 
 # resource "aws_alb_listener" "alb_listener_ecs" {
