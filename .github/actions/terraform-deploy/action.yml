@@ -52,7 +52,7 @@ runs:
       run: |
         cat ${{ inputs.env-file }}
         bash ./scripts/deploy.sh ${{ inputs.env-file }} <<< init
-        bash ./scripts/deploy.sh ${{ inputs.env-file }} <<< deploy
+        bash ./scripts/deploy.sh ${{ inputs.env-file }} <<< plan
 
 #    - name: Docker build, tag, and push image to Amazon ECR
 #      shell: bash
